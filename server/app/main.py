@@ -1,22 +1,35 @@
-from fastapi import FastAPI, APIRouter, Query, HTTPException
+from fastapi import FastAPI, APIRouter, Query, HTTPException, Request
+from fastapi.templating import Jinja2Templates
+
 from typing import Optional
+from pathlib import Path
+
 from app.schemas import RecipeSearchResults, Recipe, RecipeCreate
 from app.recipe_data import RECIPES
+
+
+BASE_PATH = Path(__file__).resolve().parent
+TEMPLATES = Jinja2Templates(directory=str(BASE_PATH / "templates"))
+
 
 app = FastAPI(title="Recipe API", openapi_url="/openapi.json")
 api_router = APIRouter()
 
 
+# Updated to serve a Jinja2 template
+# https://www.starlette.io/templates/
+# https://jinja.palletsprojects.com/en/3.0.x/templates/#synopsis
 @api_router.get("/", status_code=200)
-def root() -> dict:
+def root(request: Request) -> dict:
     """
     Root GET
     """
-    return {"msg": "Hello World!"}
+    return TEMPLATES.TemplateResponse(
+        "index.html",
+        {"request": request, "recipes": RECIPES}
+    )
 
 
-# Updated using to use a response_model
-# https://fastapi.tiangolo.com/tutorial/response-model/
 @api_router.get("/recipe/{recipe_id}", status_code=200, response_model=Recipe)
 def fetch_recipe(*, recipe_id: int) -> dict:
     """
@@ -31,8 +44,6 @@ def fetch_recipe(*, recipe_id: int) -> dict:
     return result[0]
 
 
-# Updated using the FastAPI parameter validation `Query` class
-# https://fastapi.tiangolo.com/tutorial/query-params/
 @api_router.get("/search/", status_code=200, response_model=RecipeSearchResults)
 def search_recipes(
     *,
@@ -52,8 +63,6 @@ def search_recipes(
     return {"results": list(results)[:max_results]}
 
 
-# New addition, using Pydantic model `RecipeCreate` to define
-# the POST request body
 @api_router.post("/recipe/", status_code=201, response_model=Recipe)
 def create_recipe(*, recipe_in: RecipeCreate) -> dict:
     """
