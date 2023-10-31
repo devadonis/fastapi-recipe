@@ -13,6 +13,11 @@ python-multipart = "^0.0.6"
 pydantic = {version = "^2.4.2", extras = ["email"]}
 jinja2 = "^3.1.2"
 gunicorn = "^21.2.0"
+alembic = "^1.12.0"
+tenacity = "^8.2.3"
+greenlet = "^3.0.0"
+sqlalchemy = "^2.0.22"
+aiosqlite = "^0.19.0"
 
 
 [build-system]
