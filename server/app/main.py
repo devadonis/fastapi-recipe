@@ -1,3 +1,4 @@
+import time
 from pathlib import Path
 
 from fastapi import FastAPI, APIRouter, Request, Depends
@@ -18,6 +19,15 @@ TEMPLATES = Jinja2Templates(directory=str(BASE_PATH / "templates"))
 app = FastAPI(title="Recipe API", openapi_url="/openapi.json")
 root_router = APIRouter()
 
+
+@app.middleware("http")
+async def add_process_time_header(request: Request, call_next):
+    start_time = time.time()
+    response = await call_next(request)
+    process_time = time.time() - start_time
+    response.headers["X-Process-Time"] = str(process_time)
+
+    return response
 
 # Updated to serve a Jinja2 template
 # https://www.starlette.io/templates/
