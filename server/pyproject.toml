@@ -19,6 +19,9 @@ greenlet = "^3.0.0"
 sqlalchemy = "^2.0.22"
 pydantic-settings = "^2.0.3"
 httpx = "^0.25.0"
+passlib = {version = "^1.7.4", extras = ["bcrypt"]}
+python-jose = {version = "^3.3.0", extras = ["cryptography"]}
+cffi = "^1.16.0"
 
 
 [build-system]

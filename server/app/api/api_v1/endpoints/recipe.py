@@ -6,7 +6,7 @@ from sqlalchemy.orm import Session
 from typing import Any, Optional
 
 from app import crud
-from app.dependencies.get_db import get_db
+from app.core.dependencies import get_db
 from app.schemas.recipe import Recipe, RecipeCreate, RecipeSearchResults
 
 

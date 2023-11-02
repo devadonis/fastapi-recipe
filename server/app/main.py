@@ -6,7 +6,7 @@ from fastapi.templating import Jinja2Templates
 from sqlalchemy.orm import Session
 
 from app import crud
-from app.dependencies.get_db import get_db
+from app.core.dependencies import get_db
 from app.api.api_v1 import api_router
 from app.core.config import settings
 
@@ -16,7 +16,7 @@ BASE_PATH = Path(__file__).resolve().parent
 TEMPLATES = Jinja2Templates(directory=str(BASE_PATH / "templates"))
 
 
-app = FastAPI(title="Recipe API", openapi_url="/openapi.json")
+app = FastAPI(title="Recipe API", openapi_url=f"{settings.API_V1_STR}/openapi.json")
 root_router = APIRouter()
 
 
@@ -28,6 +28,7 @@ async def add_process_time_header(request: Request, call_next):
     response.headers["X-Process-Time"] = str(process_time)
 
     return response
+
 
 # Updated to serve a Jinja2 template
 # https://www.starlette.io/templates/

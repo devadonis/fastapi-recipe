@@ -11,6 +11,12 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 
 class Settings(BaseSettings):
     API_V1_STR: str = "/api/v1"
+    JWT_SECRET: str = "devadonis"
+    ALGORITHM: str = "HS256"
+
+    # 60 minutes * 24 hours = 1day
+    ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24
+
     # BACKEND_CORS_ORIGINS is a JSON-formatted list of origins
     # e.g: ["http://localhost", "http://localhost:4200", "http://localhsot:3000", "http://localhost:8080", "http://local.dockertoolbox.tiangolo.com"]
     BACKEND_CORS_ORIGINS: List[AnyHttpUrl] = []
@@ -25,6 +31,7 @@ class Settings(BaseSettings):
 
     SQLALCHEMY_DATABASE_URI: Optional[str] = "sqlite:///example.db"
     FIRST_SUPERUSER: EmailStr = "admin@recipeapi.com"
+    FIRST_SUPERUSER_PW: str = "devadonis"
 
     class config:
         case_sensitive = True
