@@ -17,4 +17,3 @@ class User(Base):
         uselist=True
     )
     hashed_password = Column(String, nullable=False)
-

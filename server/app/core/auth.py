@@ -45,6 +45,6 @@ def create_access_token(*, sub: str) -> str:
     payload["iat"] = datetime.utcnow()
 
     # The "sub" (subject) claim identifies the principal that is the subject of the JWT
-    payload["sub"] = sub
+    payload["sub"] = str(sub)
 
-    return jwt.encode(payload, settings.JWT_SCERET, algorithm=settings.ALGORITHM)
+    return jwt.encode(payload, settings.JWT_SECRET, algorithm=settings.ALGORITHM)
